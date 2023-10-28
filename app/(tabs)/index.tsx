@@ -1,13 +1,10 @@
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 
-import { useState } from "react";
-import { InterBoldText } from "../../src/components/StyledText";
+import { useEffect, useState } from "react";
 import { View } from "../../src/components/Themed";
+import jsStore from "../../src/services/network";
 import { useAppDispatch, useAppSelector } from "../../src/store/hooks";
-import {
-  incrementAsync,
-  selectCount,
-} from "../../src/store/slices/counterSlice";
+import { selectCount } from "../../src/store/slices/counterSlice";
 export default function DiscoverScreen() {
   const [incrementAmount, setIncrementAmount] = useState("2");
 
@@ -15,17 +12,18 @@ export default function DiscoverScreen() {
   const count = useAppSelector(selectCount);
   const status = useAppSelector((state) => state.counter.status);
   const dispatch = useAppDispatch();
+  const [products, setProducts] = useState([]);
+  const getProducts = async () => {
+    const [data, err] = await jsStore.product.getAllProducts();
+    console.log(data, err);
+  };
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <InterBoldText>{count}</InterBoldText>
-      <Pressable
-        onPress={() => {
-          dispatch(incrementAsync(10));
-        }}
-      >
-        <InterBoldText>{status}</InterBoldText>
-      </Pressable>
+      <TextInput style={styles.searchInput} placeholder="Search a product" />
     </View>
   );
 }
@@ -35,5 +33,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  searchInput: {
+    borderWidth: 2,
+    height: 30,
+    borderColor: "white",
+    width: "100%",
+    borderRadius: 10,
   },
 });

@@ -1,5 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
+import { Link, Tabs } from "expo-router";
 import { useColorScheme } from "react-native";
 
 import Colors from "../../src/constants/Colors";
@@ -28,6 +28,19 @@ export default function TabLayout() {
         options={{
           title: "Discover",
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          headerRight: ({}) => {
+            return (
+              <Link
+                style={{
+                  borderColor: "white",
+                  paddingRight: 10,
+                }}
+                href="/settings-modal"
+              >
+                <TabBarIcon name="bars" color="white" />
+              </Link>
+            );
+          },
         }}
       />
       <Tabs.Screen
