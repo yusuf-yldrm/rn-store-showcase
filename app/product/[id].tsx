@@ -1,7 +1,11 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { InterBoldText } from "../../src/components/Theme/StyledText";
+import AddCartButton from "../../src/components/AddCartButton";
+import {
+  InterBoldText,
+  InterMediumText,
+} from "../../src/components/Theme/StyledText";
 import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
 
@@ -46,13 +50,47 @@ const ProductScreen = () => {
   }
 
   return (
-    <View>
+    <View style={styles.pageContainer}>
       <ImageSlider images={product?.images || []} />
-      <InterBoldText>{product?.title}</InterBoldText>
+
+      <View style={styles.productContainer}>
+        <View style={styles.productHeader}>
+          <InterBoldText style={styles.title}>{product?.title}</InterBoldText>
+          <InterBoldText style={styles.price}>
+            {product?.price} TL
+          </InterBoldText>
+        </View>
+        <View>
+          <InterMediumText>{product?.description}</InterMediumText>
+        </View>
+      </View>
+
+      <AddCartButton />
     </View>
   );
 };
 
 export default ProductScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    gap: 10,
+  },
+  productContainer: {
+    gap: 10,
+    paddingHorizontal: 5,
+  },
+  title: {
+    fontSize: 20,
+  },
+  productHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  price: {
+    fontSize: 15,
+  },
+});
