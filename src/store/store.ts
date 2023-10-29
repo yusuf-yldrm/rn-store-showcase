@@ -1,10 +1,19 @@
-import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import {
+  Action,
+  ThunkAction,
+  combineReducers,
+  configureStore,
+} from "@reduxjs/toolkit";
+import cartData from "./slices/cart/reducer";
+import favoriteData from "./slices/favorite/reducer";
+
+const rootReducers = combineReducers({
+  cart: cartData,
+  favorite: favoriteData,
+});
 
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+  reducer: rootReducers,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

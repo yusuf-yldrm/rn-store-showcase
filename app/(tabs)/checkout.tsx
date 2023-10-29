@@ -1,15 +1,36 @@
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 
-import { Text, View } from "../../src/components/Theme/Themed";
+import { useEffect, useState } from "react";
+import EmptyScreen from "../../src/components/Checkout/EmptyScreen";
+import CheckoutCard from "../../src/components/CheckoutCard/CheckoutCard";
+import { View } from "../../src/components/Theme/Themed";
+import { useAppSelector } from "../../src/store/hooks";
+import { ProductItem } from "../../src/types/Product";
 
 export default function CheckoutScreen() {
+  const data = useAppSelector((items) => items.cart);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+
+  useEffect(() => {
+    setProducts(data.cart);
+  }, [data.cart]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Checkout</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+      <FlatList
+        data={products}
+        ListEmptyComponent={() => <EmptyScreen />}
+        contentContainerStyle={{ flexGrow: 1 }}
+        renderItem={({ item, index: idx }) => (
+          <CheckoutCard
+            key={item.id}
+            product={item}
+            quantity={1}
+            productIdx={idx}
+          />
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+        style={styles.list}
       />
     </View>
   );
@@ -21,13 +42,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+
+  list: {
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 10,
   },
 });
