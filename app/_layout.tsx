@@ -64,8 +64,11 @@ function RootLayoutNav() {
             options={{ presentation: "modal", title: "Store Settings" }}
           />
           <Stack.Screen
-            name="[id]"
-            options={{ presentation: "modal", title: "Store Settings" }}
+            name="product/[id]"
+            options={{
+              //@ts-ignore
+              title: "Product",
+            }}
           />
         </Stack>
       </ThemeProvider>

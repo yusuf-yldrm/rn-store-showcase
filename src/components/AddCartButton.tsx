@@ -4,11 +4,12 @@ import { InterBoldText } from "./Theme/StyledText";
 
 interface AddCartButtonProps {
   productId: string | undefined;
+  onPress: () => void;
 }
 
 const AddCartButton = (props: AddCartButtonProps) => {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={props.onPress}>
       <InterBoldText style={styles.text}>ADD TO CART</InterBoldText>
     </TouchableOpacity>
   );

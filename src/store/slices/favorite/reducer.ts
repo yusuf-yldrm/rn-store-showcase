@@ -21,5 +21,6 @@ export const FavoriteData = createSlice({
 });
 
 export const { addNewItem, removeItem } = FavoriteData.actions;
-export const cardStateData = (state: IFavoriteState) => state.favorite.favorite;
+export const favoriteStateData = (state: IFavoriteState) =>
+  state.favorite.favorite;
 export default FavoriteData.reducer;
