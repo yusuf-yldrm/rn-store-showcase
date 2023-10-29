@@ -12,7 +12,6 @@ export const CartData = createSlice({
   reducers: {
     addNewItem: (state: ICart, action: PayloadAction<CartProductItem>) => {
       const { payload } = action;
-      console.log({ payload, cart: state.cart });
       const index = state.cart.findIndex(
         (el) => el.product.title === payload.product.title
       );

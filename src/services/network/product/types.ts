@@ -1,3 +1,4 @@
+import { ProductItem } from "../../../types/Product";
 import { Request } from "../types";
 
 export type GetAllProductsT = {};
@@ -13,7 +14,18 @@ export type GetProductByIdT = {
 };
 export type GetProductByIdAnswer = ProductItem;
 
+export type SearchProductsT = {
+  q: string;
+};
+export type SearchProductsAnswer = {
+  products: ProductItem[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
 export namespace Service {
   export type GetAllProducts = Request<GetAllProductsT, GetAllProductsAnswer>;
   export type GetProductById = Request<GetProductByIdT, GetProductByIdAnswer>;
+  export type SearchProducts = Request<SearchProductsT, SearchProductsAnswer>;
 }

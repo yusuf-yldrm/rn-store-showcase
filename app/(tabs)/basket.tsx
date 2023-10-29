@@ -16,7 +16,6 @@ export default function CheckoutScreen() {
 
   useEffect(() => {
     setProducts(data.cart);
-    console.log({ cartItems: data.cart });
   }, [data.cart]);
 
   return (
