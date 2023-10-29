@@ -37,7 +37,7 @@ export default function TabLayout() {
                 }}
                 href="/settings-modal"
               >
-                <TabBarIcon name="bars" color="white" />
+                <TabBarIcon name="bars" color="black" />
               </Link>
             );
           },

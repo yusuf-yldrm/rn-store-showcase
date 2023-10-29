@@ -1,9 +1,10 @@
 import { request } from "../instance";
+import type { Service } from "./types";
 
 /// Endpoints
 //  1. Get All Products
 
-export const getAllProducts: any = () =>
+export const getAllProducts: Service.GetAllProducts = () =>
   request({
     url: "/products",
   });
