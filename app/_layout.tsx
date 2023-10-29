@@ -41,6 +41,8 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
+    // AsyncStorage.clear();
+
     if (loaded) {
       SplashScreen.hideAsync();
     }

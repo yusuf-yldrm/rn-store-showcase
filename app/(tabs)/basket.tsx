@@ -1,20 +1,22 @@
 import { FlatList, Pressable, StyleSheet } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import CheckoutCard from "../../src/components/Checkout/CheckoutCard/CheckoutCard";
 import CheckoutItem from "../../src/components/Checkout/CheckoutItem";
 import EmptyScreen from "../../src/components/Checkout/EmptyScreen";
-import CheckoutCard from "../../src/components/CheckoutCard/CheckoutCard";
 import { InterBoldText } from "../../src/components/Theme/StyledText";
 import { View } from "../../src/components/Theme/Themed";
 import { useAppSelector } from "../../src/store/hooks";
-import { ProductItem } from "../../src/types/Product";
+import { CartProductItem } from "../../src/types/Product";
 
 export default function CheckoutScreen() {
   const data = useAppSelector((items) => items.cart);
-  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [products, setProducts] = useState<CartProductItem[]>([]);
 
   useEffect(() => {
     setProducts(data.cart);
+    console.log({ cartItems: data.cart });
   }, [data.cart]);
 
   return (
@@ -25,8 +27,8 @@ export default function CheckoutScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
         renderItem={({ item, index: idx }) => (
           <CheckoutCard
-            key={item.id}
-            product={item}
+            key={item.product.id}
+            cartProduct={item}
             quantity={1}
             productIdx={idx}
           />
@@ -34,15 +36,23 @@ export default function CheckoutScreen() {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         style={styles.list}
       />
-
-      <View style={styles.checkoutContainer}>
-        <CheckoutItem count={0} title="Price" />
-        <CheckoutItem count={10} title="Price" />
-        <CheckoutItem count={10} title="Price" />
-      </View>
-      <Pressable style={styles.checkoutButton}>
-        <InterBoldText style={styles.checkoutText}>Checkout</InterBoldText>
-      </Pressable>
+      {products.length > 0 && (
+        <>
+          <View style={styles.checkoutContainer}>
+            <CheckoutItem count={0} title="Price" />
+            <CheckoutItem count={10} title="Price" />
+            <CheckoutItem count={10} title="Price" />
+          </View>
+          <Pressable
+            style={styles.checkoutButton}
+            onPress={() => {
+              AsyncStorage.clear();
+            }}
+          >
+            <InterBoldText style={styles.checkoutText}>Checkout</InterBoldText>
+          </Pressable>
+        </>
+      )}
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
@@ -24,7 +24,11 @@ const ProductScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isFavorite, setIsFavorited] = useState(false);
   const dispatch = useDispatch();
+  const products = useAppSelector((item) => item.cart.cart);
   const navigation = useNavigation();
+  const [quantity, setQuantity] = useState();
+
+  const [itemInCart, setItemInCart] = useState(false);
 
   const addCartNewItem = () => {
     if (product == undefined) {
@@ -32,7 +36,12 @@ const ProductScreen = () => {
       return;
     }
 
-    dispatch(addNewItem(product));
+    dispatch(
+      addNewItem({
+        product: product,
+        quantity: 0,
+      })
+    );
   };
 
   const toggleFavorite = () => {
@@ -46,13 +55,39 @@ const ProductScreen = () => {
   };
 
   const checkFavorite = () => {
-    // favoriteItems.map((item) => console.log(item));
-    // console.log({ favoriteItems });
+    if (product == undefined) {
+      return;
+    }
+
+    const theItem = favoriteItems.find(
+      //@ts-ignore
+      (item) => item.id === product.id
+    );
+    if (theItem) {
+      setIsFavorited(true);
+    } else {
+      setIsFavorited(false);
+    }
+  };
+
+  const checkInCart = () => {
+    //@ts-ignore
+    const item = products.find((item) => item.product.id == id);
+    console.log({ item });
+
+    if (item) {
+      setItemInCart(true);
+      return true;
+    } else {
+      setItemInCart(false);
+      return false;
+    }
   };
 
   const getProductDetails = async () => {
     try {
       setLoading(true);
+      checkInCart();
       const [data, err] = await jsStore.product.getProductById({
         id: typeof id == "string" ? id : id[0],
       });
@@ -77,7 +112,6 @@ const ProductScreen = () => {
 
   useEffect(() => {
     getProductDetails();
-    checkFavorite();
   }, [id, navigation]);
 
   useEffect(() => {
@@ -86,7 +120,7 @@ const ProductScreen = () => {
         return (
           <Pressable
             style={{
-              borderWidth: 2,
+              padding: 10,
             }}
             onPress={() => {
               toggleFavorite();
@@ -102,6 +136,7 @@ const ProductScreen = () => {
         );
       },
     });
+    checkFavorite();
   }, [isFavorite, product]);
 
   if (loading) {
@@ -147,9 +182,14 @@ const ProductScreen = () => {
       </View>
 
       <AddCartButton
+        inCart={itemInCart}
         onPress={() => {
-          addCartNewItem();
-          alert(product?.title + "added to the cart.");
+          if (itemInCart) {
+            router.push("/(tabs)/basket");
+          } else {
+            addCartNewItem();
+            alert(product?.title + "added to the cart.");
+          }
         }}
         productId={product?.id.toString()}
       />

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ProductItem } from "../../../types/Product";
+import { CartProductItem } from "../../../types/Product";
 import { ICart, ICartState } from "./../../../types/Cart";
 
 export const initialState = {
@@ -10,8 +10,47 @@ export const CartData = createSlice({
   name: "cartData",
   initialState: initialState,
   reducers: {
-    addNewItem: (state: ICart, action: PayloadAction<ProductItem>) => {
-      state.cart = [...state.cart, action.payload];
+    addNewItem: (state: ICart, action: PayloadAction<CartProductItem>) => {
+      const { payload } = action;
+      console.log({ payload, cart: state.cart });
+      const index = state.cart.findIndex(
+        (el) => el.product.title === payload.product.title
+      );
+
+      if (index > -1) {
+        const newState = [...state.cart];
+        newState[index] = {
+          ...newState[index],
+          quantity: payload.quantity + 1,
+        };
+
+        state.cart = newState;
+      } else {
+        state.cart = [
+          ...state.cart,
+          {
+            product: payload.product,
+            quantity: payload.quantity + 1,
+          },
+        ];
+      }
+    },
+    decreaseQuantityItem: (state: ICart, action: PayloadAction<number>) => {
+      const { payload } = action;
+      const quantity = state.cart[payload].quantity;
+
+      if (quantity == 0) {
+        removeCartItem(payload);
+      }
+
+      const newState = state.cart;
+
+      newState[payload] = {
+        product: state.cart[payload].product,
+        quantity: quantity > 0 ? quantity - 1 : 0,
+      };
+
+      state.cart = newState;
     },
     removeCartItem: (state: ICart, action: PayloadAction<number>) => {
       const { payload } = action;
@@ -20,6 +59,7 @@ export const CartData = createSlice({
   },
 });
 
-export const { addNewItem, removeCartItem } = CartData.actions;
+export const { addNewItem, removeCartItem, decreaseQuantityItem } =
+  CartData.actions;
 export const cardStateData = (state: ICartState) => state.cart.cart;
 export default CartData.reducer;

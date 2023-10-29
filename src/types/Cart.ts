@@ -1,10 +1,10 @@
-import { ProductItem } from "./Product";
+import { CartProductItem } from "./Product";
 
 export interface ICart {
-  cart: ProductItem[];
+  cart: CartProductItem[];
 }
 export interface ICartState {
   cart: {
-    cart: ProductItem[];
+    cart: CartProductItem[];
   };
 }
