@@ -65,7 +65,7 @@ const ProductScreen = () => {
         </View>
       </View>
 
-      <AddCartButton />
+      <AddCartButton productId={product?.id.toString()} />
     </View>
   );
 };

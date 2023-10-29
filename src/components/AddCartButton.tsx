@@ -2,7 +2,9 @@ import * as React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { InterBoldText } from "./Theme/StyledText";
 
-interface AddCartButtonProps {}
+interface AddCartButtonProps {
+  productId: string | undefined;
+}
 
 const AddCartButton = (props: AddCartButtonProps) => {
   return (
