@@ -7,9 +7,11 @@ import {
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { Text, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { store } from "../src/store";
+import { persistor } from "../src/store/store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -56,22 +58,26 @@ function RootLayoutNav() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="settings-modal"
-            options={{ presentation: "modal", title: "Store Settings" }}
-          />
-          <Stack.Screen
-            name="product/[id]"
-            options={{
-              //@ts-ignore
-              title: "Product",
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
+      <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="settings-modal"
+              options={{ presentation: "modal", title: "Store Settings" }}
+            />
+            <Stack.Screen
+              name="product/[id]"
+              options={{
+                //@ts-ignore
+                title: "Product",
+              }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }

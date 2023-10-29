@@ -13,10 +13,12 @@ import {
 } from "../../src/components/Theme/StyledText";
 import { View } from "../../src/components/Theme/Themed";
 import jsStore from "../../src/services/network";
+import { ProductItem } from "../../src/types/Product";
 
 export default function DiscoverScreen() {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [totalProduct, setTotalProduct] = useState(0);
 
   const getProducts = async () => {
     try {
@@ -25,7 +27,7 @@ export default function DiscoverScreen() {
       if (err != null) {
         throw err;
       }
-
+      setTotalProduct(data.total);
       setProducts(data.products);
       setLoading(false);
     } catch (err: any) {
@@ -45,8 +47,8 @@ export default function DiscoverScreen() {
       <View
         style={{ display: "flex", width: "100%", flexDirection: "row", gap: 4 }}
       >
-        <InterBoldText>Products</InterBoldText>
-        <InterBoldText>(Toplam 16 adet)</InterBoldText>
+        <InterBoldText>Ürünler</InterBoldText>
+        <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
       </View>
       <View
         style={{
