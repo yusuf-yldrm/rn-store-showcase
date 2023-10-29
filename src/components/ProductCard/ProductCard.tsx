@@ -1,28 +1,38 @@
+import { router } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { InterBoldText, InterRegularText } from "../StyledText";
 
 const ProductCard = ({ product }: { product: ProductItem }) => {
   return (
-    <View style={styles.productItem}>
-      <Image source={{ uri: product.thumbnail }} style={styles.productImage} />
-      <View style={styles.textArea}>
-        <InterBoldText style={styles.title} numberOfLines={1}>
-          {product.title}
-        </InterBoldText>
-        <InterRegularText style={styles.desc} numberOfLines={2}>
-          {product.description}
-        </InterRegularText>
+    <Pressable
+      onPress={() => {
+        router.push(`/product/${product.id}`);
+      }}
+    >
+      <View style={styles.productItem}>
+        <Image
+          source={{ uri: product.thumbnail }}
+          style={styles.productImage}
+        />
+        <View style={styles.textArea}>
+          <InterBoldText style={styles.title} numberOfLines={1}>
+            {product.title}
+          </InterBoldText>
+          <InterRegularText style={styles.desc} numberOfLines={2}>
+            {product.description}
+          </InterRegularText>
+        </View>
+        <View style={styles.priceArea}>
+          <InterBoldText style={styles.price}>
+            {product.price && product.price + " TL"}
+          </InterBoldText>
+          <InterRegularText style={styles.stock}>
+            {product.stock + "x"}{" "}
+          </InterRegularText>
+        </View>
       </View>
-      <View style={styles.priceArea}>
-        <InterBoldText style={styles.price}>
-          {product.price && product.price + " TL"}
-        </InterBoldText>
-        <InterRegularText style={styles.stock}>
-          {product.stock + "x"}{" "}
-        </InterRegularText>
-      </View>
-    </View>
+    </Pressable>
   );
 };
 

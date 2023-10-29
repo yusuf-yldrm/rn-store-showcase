@@ -9,9 +9,9 @@ export const getAllProducts: Service.GetAllProducts = () =>
     url: "/products",
   });
 
-export const getProductById: any = (data: { id: string }) =>
+export const getProductById: Service.GetProductById = (data) =>
   request({
-    url: "/products/" + data.id,
+    url: "/products/" + data?.id,
   });
 
 // limit=10&skip=10&select=title,price

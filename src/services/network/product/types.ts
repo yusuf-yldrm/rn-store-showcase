@@ -8,6 +8,12 @@ export type GetAllProductsAnswer = {
   limit: number;
 };
 
+export type GetProductByIdT = {
+  id: number | string;
+};
+export type GetProductByIdAnswer = ProductItem;
+
 export namespace Service {
   export type GetAllProducts = Request<GetAllProductsT, GetAllProductsAnswer>;
+  export type GetProductById = Request<GetProductByIdT, GetProductByIdAnswer>;
 }
