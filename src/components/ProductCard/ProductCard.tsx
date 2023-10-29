@@ -41,7 +41,7 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   productItem: {
-    backgroundColor: "#665b5b",
+    backgroundColor: "#D9D9D9",
     height: 60,
     display: "flex",
     flexDirection: "row",
