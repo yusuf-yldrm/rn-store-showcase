@@ -15,14 +15,12 @@ export const getProductById: Service.GetProductById = (data) =>
   });
 
 // limit=10&skip=10&select=title,price
-export const searchProducts: any = (data: { query: string }) =>
-  request({
-    url: "/products",
-    params: {
-      q: data.query,
-    },
+export const searchProducts: Service.SearchProducts = (data) => {
+  console.log({ data });
+  return request({
+    url: "/products/search?q=" + data?.q,
   });
-
+};
 export const getProductCategories: any = () =>
   request({
     url: "/products/categories",

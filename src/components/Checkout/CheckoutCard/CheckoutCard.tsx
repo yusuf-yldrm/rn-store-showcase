@@ -2,21 +2,28 @@ import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { removeCartItem } from "../../store/slices/cart/reducer";
-import { ProductItem } from "../../types/Product";
-import calculateDiscountedPrice from "../../utils/CalculateDiscount";
-import { InterBoldText } from "../Theme/StyledText";
+import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { useDispatch } from "react-redux";
+import {
+  addNewItem,
+  decreaseQuantityItem,
+  removeCartItem,
+} from "../../../store/slices/cart/reducer";
+import { CartProductItem } from "../../../types/Product";
+import calculateDiscountedPrice from "../../../utils/CalculateDiscount";
+import { InterBoldText } from "../../Theme/StyledText";
 
 const CheckoutCard = ({
-  product,
+  cartProduct,
   productIdx,
-  quantity,
 }: {
-  product: ProductItem;
+  cartProduct: CartProductItem;
   productIdx: number;
   quantity: number;
 }) => {
   const [isDiscounted, setIsDiscounted] = useState(false);
+  const dispatch = useDispatch();
+  const { product, quantity } = cartProduct;
 
   useEffect(() => {
     if (product.discountPercentage > 0) {
@@ -26,21 +33,62 @@ const CheckoutCard = ({
     }
   }, [product]);
 
+  //@ts-ignore
+  const renderRightActions = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [0, 50, 100, 101],
+      outputRange: [-20, 0, 0, 1],
+    });
+    return (
+      <RectButton
+        style={styles.trashButton}
+        onPress={() => {
+          alert(product.title + " Removed From Cart");
+          dispatch(removeCartItem(productIdx));
+        }}
+      >
+        <FontAwesome name="trash" size={18} color={"white"} />
+      </RectButton>
+    );
+  };
+
+  const addQuantity = () => {
+    dispatch(
+      addNewItem({
+        product,
+        quantity,
+      })
+    );
+  };
+
+  const decreaseQuantity = () => {
+    dispatch(decreaseQuantityItem(productIdx));
+  };
+
   return (
-    <Pressable
-      onPress={() => {
-        router.push(`/product/${product.id}`);
-      }}
-    >
+    <Swipeable renderRightActions={renderRightActions}>
       <View style={styles.productItem}>
-        <Image
-          source={{ uri: product.thumbnail }}
-          style={styles.productImage}
-        />
+        <Pressable
+          onPress={() => {
+            router.push(`/product/${product.id}`);
+          }}
+        >
+          <Image
+            source={{ uri: product.thumbnail }}
+            style={styles.productImage}
+          />
+        </Pressable>
+
         <View style={styles.textArea}>
-          <InterBoldText style={styles.title} numberOfLines={1}>
-            {product.title}
-          </InterBoldText>
+          <Pressable
+            onPress={() => {
+              router.push(`/product/${product.id}`);
+            }}
+          >
+            <InterBoldText style={styles.title} numberOfLines={1}>
+              {product.title}
+            </InterBoldText>
+          </Pressable>
           <View style={styles.priceContainer}>
             <InterBoldText style={styles.price} numberOfLines={2}>
               {calculateDiscountedPrice(
@@ -57,31 +105,30 @@ const CheckoutCard = ({
             </InterBoldText>
           </View>
         </View>
-
         <View style={styles.checkoutContainer}>
           <View style={styles.countArea}>
-            <Pressable style={styles.countButton}>
+            <Pressable
+              style={styles.countButton}
+              onPress={() => {
+                decreaseQuantity();
+              }}
+            >
               <FontAwesome name="minus" />
             </Pressable>
             <InterBoldText>{quantity}</InterBoldText>
 
-            <Pressable style={styles.countButton}>
+            <Pressable
+              style={styles.countButton}
+              onPress={() => {
+                addQuantity();
+              }}
+            >
               <FontAwesome name="plus" />
             </Pressable>
           </View>
-
-          <Pressable
-            onPress={() => {
-              alert(productIdx);
-              removeCartItem(productIdx);
-            }}
-            style={styles.trashButton}
-          >
-            <FontAwesome name="trash" size={18} color={"red"} />
-          </Pressable>
         </View>
       </View>
-    </Pressable>
+    </Swipeable>
   );
 };
 
@@ -103,7 +150,6 @@ const styles = StyleSheet.create({
   productImage: {
     width: 60,
     height: "100%",
-    backgroundSize: "cover",
     borderRadius: 5,
   },
   textArea: {
@@ -139,13 +185,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 5,
+    gap: 9,
   },
   countButton: {
     backgroundColor: "#A7A7A7",
     borderRadius: 2,
-    width: 20,
-    padding: 4,
+    padding: 8,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -156,6 +201,11 @@ const styles = StyleSheet.create({
   },
   trashIcon: {},
   trashButton: {
-    padding: 3,
+    padding: 4,
+    borderRadius: 10,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "red",
   },
 });

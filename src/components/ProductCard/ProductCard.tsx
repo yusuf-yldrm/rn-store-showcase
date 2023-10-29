@@ -1,17 +1,10 @@
-import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ProductItem } from "../../types/Product";
 import { InterBoldText, InterRegularText } from "../Theme/StyledText";
 
-const ProductCard = ({
-  product,
-  type = "view",
-}: {
-  product: ProductItem;
-  type: "checkout" | "view";
-}) => {
+const ProductCard = ({ product }: { product: ProductItem }) => {
   return (
     <Pressable
       onPress={() => {
@@ -31,33 +24,14 @@ const ProductCard = ({
             {product.description}
           </InterRegularText>
         </View>
-        {type == "view" && (
-          <View style={styles.priceArea}>
-            <InterBoldText style={styles.price}>
-              {product.price && product.price + " TL"}
-            </InterBoldText>
-            <InterRegularText style={styles.stock}>
-              {product.stock + "x"}{" "}
-            </InterRegularText>
-          </View>
-        )}
-
-        {type == "checkout" && (
-          <View style={styles.checkoutContainer}>
-            <View style={styles.countArea}>
-              <Pressable style={styles.countButton}>
-                <FontAwesome name="minus" />
-              </Pressable>
-              <InterBoldText>1</InterBoldText>
-
-              <Pressable style={styles.countButton}>
-                <FontAwesome name="plus" />
-              </Pressable>
-            </View>
-
-            <FontAwesome name="trash" size={18} color={"red"} />
-          </View>
-        )}
+        <View style={styles.priceArea}>
+          <InterBoldText style={styles.price}>
+            {product.price && product.price + " TL"}
+          </InterBoldText>
+          <InterRegularText style={styles.stock}>
+            {product.stock + "x"}{" "}
+          </InterRegularText>
+        </View>
       </View>
     </Pressable>
   );
@@ -67,7 +41,7 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   productItem: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#665b5b",
     height: 60,
     display: "flex",
     flexDirection: "row",
@@ -81,7 +55,6 @@ const styles = StyleSheet.create({
   productImage: {
     width: 60,
     height: "100%",
-    backgroundSize: "cover",
     borderRadius: 5,
   },
   textArea: {

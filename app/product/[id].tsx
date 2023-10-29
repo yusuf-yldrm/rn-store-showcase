@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
 import AddCartButton from "../../src/components/AddCartButton";
 import {
@@ -10,17 +10,28 @@ import {
 } from "../../src/components/Theme/StyledText";
 import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
+import { useAppSelector } from "../../src/store/hooks";
 import { addNewItem } from "../../src/store/slices/cart/reducer";
+import {
+  addNewFavoriteItem,
+  removeFavoriteItem,
+} from "../../src/store/slices/favorite/reducer";
 import { ProductItem } from "../../src/types/Product";
 import calculateDiscountedPrice from "../../src/utils/CalculateDiscount";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
+  const { cart, favorite } = useAppSelector((item) => item);
+  const favoriteItems = favorite.favorite;
+  const products = cart.cart;
 
   const [product, setProduct] = useState<ProductItem>();
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorited] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const [itemInCart, setItemInCart] = useState(false);
 
   const addCartNewItem = () => {
     if (product == undefined) {
@@ -28,18 +39,61 @@ const ProductScreen = () => {
       return;
     }
 
-    dispatch(addNewItem(product));
+    dispatch(
+      addNewItem({
+        product: product,
+        quantity: 0,
+      })
+    );
   };
 
-  // useEffect(() => {
-  //   if (loading == false) {
+  const toggleFavorite = () => {
+    if (product == undefined) {
+      alert("An error happening");
+      return;
+    }
 
-  //   }
-  // }, [navigation]);
+    setIsFavorited(!isFavorite);
+    if (isFavorite) {
+      dispatch(removeFavoriteItem(product.id));
+    } else {
+      dispatch(addNewFavoriteItem(product));
+    }
+  };
+
+  const checkFavorite = () => {
+    if (product == undefined) {
+      return;
+    }
+
+    const theItem = favoriteItems.find(
+      //@ts-ignore
+      (item) => item.id === product.id
+    );
+    if (theItem) {
+      setIsFavorited(true);
+    } else {
+      setIsFavorited(false);
+    }
+  };
+
+  const checkInCart = () => {
+    //@ts-ignore
+    const item = products.find((item) => item.product.id == id);
+
+    if (item) {
+      setItemInCart(true);
+      return true;
+    } else {
+      setItemInCart(false);
+      return false;
+    }
+  };
 
   const getProductDetails = async () => {
     try {
       setLoading(true);
+      checkInCart();
       const [data, err] = await jsStore.product.getProductById({
         id: typeof id == "string" ? id : id[0],
       });
@@ -48,17 +102,6 @@ const ProductScreen = () => {
       }
       navigation.setOptions({
         title: data?.title,
-        headerRight: () => {
-          return (
-            <View>
-              <FontAwesome
-                size={20}
-                style={{ marginBottom: -3 }}
-                name="heart"
-              />
-            </View>
-          );
-        },
       });
 
       setProduct(data);
@@ -76,6 +119,35 @@ const ProductScreen = () => {
   useEffect(() => {
     getProductDetails();
   }, [id, navigation]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Pressable
+            style={{
+              padding: 10,
+            }}
+            onPress={() => {
+              toggleFavorite();
+            }}
+          >
+            <FontAwesome
+              size={20}
+              style={{ marginBottom: -3 }}
+              name={isFavorite ? "heart" : "heart-o"}
+              color={isFavorite ? "red" : "black"}
+            />
+          </Pressable>
+        );
+      },
+    });
+    checkFavorite();
+  }, [isFavorite, product]);
+
+  useEffect(() => {
+    checkInCart();
+  }, [products]);
 
   if (loading) {
     return (
@@ -120,9 +192,14 @@ const ProductScreen = () => {
       </View>
 
       <AddCartButton
+        inCart={itemInCart}
         onPress={() => {
-          alert("pressed");
-          addCartNewItem();
+          if (itemInCart) {
+            router.push("/(tabs)/basket");
+          } else {
+            addCartNewItem();
+            alert(product?.title + "added to the cart.");
+          }
         }}
         productId={product?.id.toString()}
       />

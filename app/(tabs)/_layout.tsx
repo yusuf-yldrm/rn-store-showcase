@@ -51,7 +51,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="checkout"
+        name="basket"
         options={{
           title: "Basket",
           tabBarIcon: ({ color }) => (
