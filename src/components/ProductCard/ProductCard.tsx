@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { InterBoldText, InterRegularText } from "../StyledText";
+import { InterBoldText, InterRegularText } from "../Theme/StyledText";
 
 const ProductCard = ({ product }: { product: ProductItem }) => {
   return (

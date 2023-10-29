@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Text, View } from "../../src/components/Themed";
+import { Text, View } from "../../src/components/Theme/Themed";
 
 export default function FavoritesScreen() {
   return (

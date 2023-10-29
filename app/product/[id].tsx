@@ -1,8 +1,8 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import ImageSlider from "../../src/components/ImageSlider";
-import { InterBoldText } from "../../src/components/StyledText";
+import { InterBoldText } from "../../src/components/Theme/StyledText";
+import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
 
 const ProductScreen = () => {

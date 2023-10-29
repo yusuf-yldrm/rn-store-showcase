@@ -10,8 +10,8 @@ import { ProductCard } from "../../src/components/ProductCard";
 import {
   InterBoldText,
   InterMediumText,
-} from "../../src/components/StyledText";
-import { View } from "../../src/components/Themed";
+} from "../../src/components/Theme/StyledText";
+import { View } from "../../src/components/Theme/Themed";
 import jsStore from "../../src/services/network";
 
 export default function DiscoverScreen() {
