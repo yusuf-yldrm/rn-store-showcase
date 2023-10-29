@@ -43,7 +43,7 @@ const CheckoutCard = ({
       <RectButton
         style={styles.trashButton}
         onPress={() => {
-          alert(productIdx);
+          alert(product.title + " Removed From Cart");
           dispatch(removeCartItem(productIdx));
         }}
       >
@@ -67,61 +67,67 @@ const CheckoutCard = ({
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
-      <Pressable
-        onPress={() => {
-          router.push(`/product/${product.id}`);
-        }}
-      >
-        <View style={styles.productItem}>
+      <View style={styles.productItem}>
+        <Pressable
+          onPress={() => {
+            router.push(`/product/${product.id}`);
+          }}
+        >
           <Image
             source={{ uri: product.thumbnail }}
             style={styles.productImage}
           />
-          <View style={styles.textArea}>
+        </Pressable>
+
+        <View style={styles.textArea}>
+          <Pressable
+            onPress={() => {
+              router.push(`/product/${product.id}`);
+            }}
+          >
             <InterBoldText style={styles.title} numberOfLines={1}>
               {product.title}
             </InterBoldText>
-            <View style={styles.priceContainer}>
-              <InterBoldText style={styles.price} numberOfLines={2}>
-                {calculateDiscountedPrice(
-                  product.price,
-                  product.discountPercentage
-                ).toFixed()}
-                TL
-              </InterBoldText>
-              <InterBoldText
-                style={[styles.price, isDiscounted && styles.discountPrice]}
-                numberOfLines={2}
-              >
-                {product.price} TL
-              </InterBoldText>
-            </View>
-          </View>
-
-          <View style={styles.checkoutContainer}>
-            <View style={styles.countArea}>
-              <Pressable
-                style={styles.countButton}
-                onPress={() => {
-                  decreaseQuantity();
-                }}
-              >
-                <FontAwesome name="minus" />
-              </Pressable>
-              <InterBoldText>{quantity}</InterBoldText>
-
-              <Pressable
-                style={styles.countButton}
-                onPress={() => {
-                  addQuantity();
-                }}
-              >
-                <FontAwesome name="plus" />
-              </Pressable>
-            </View>
+          </Pressable>
+          <View style={styles.priceContainer}>
+            <InterBoldText style={styles.price} numberOfLines={2}>
+              {calculateDiscountedPrice(
+                product.price,
+                product.discountPercentage
+              ).toFixed()}
+              TL
+            </InterBoldText>
+            <InterBoldText
+              style={[styles.price, isDiscounted && styles.discountPrice]}
+              numberOfLines={2}
+            >
+              {product.price} TL
+            </InterBoldText>
           </View>
         </View>
-      </Pressable>
+        <View style={styles.checkoutContainer}>
+          <View style={styles.countArea}>
+            <Pressable
+              style={styles.countButton}
+              onPress={() => {
+                decreaseQuantity();
+              }}
+            >
+              <FontAwesome name="minus" />
+            </Pressable>
+            <InterBoldText>{quantity}</InterBoldText>
+
+            <Pressable
+              style={styles.countButton}
+              onPress={() => {
+                addQuantity();
+              }}
+            >
+              <FontAwesome name="plus" />
+            </Pressable>
+          </View>
+        </View>
+      </View>
     </Swipeable>
   );
 };

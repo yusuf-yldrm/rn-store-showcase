@@ -18,7 +18,12 @@ export const FavoriteData = createSlice({
     },
     removeFavoriteItem: (state: IFavorite, action: PayloadAction<number>) => {
       const { payload } = action;
-      state.favorite.splice(payload, 1);
+
+      const filteredArray = state.favorite.filter(
+        (item) => item.id !== payload
+      );
+
+      state.favorite = filteredArray;
     },
   },
 });

@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { InterBoldText } from "../Theme/StyledText";
 
-const EmptyScreen = () => {
+const EmptyScreen = ({ title = "Cart" }) => {
   const animation = useRef(null);
   return (
     <View style={styles.screen}>
@@ -36,7 +36,7 @@ const EmptyScreen = () => {
       </View>
       <View style={styles.emptyTextContainer}>
         <InterBoldText style={styles.emptyText}>
-          Your Cart Is Empty
+          Your {title} Is Empty
         </InterBoldText>
         <Link href={"/(tabs)/"}>
           <View style={styles.emptyLinkContainer}>

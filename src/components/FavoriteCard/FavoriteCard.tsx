@@ -1,6 +1,14 @@
 import { FontAwesome } from "@expo/vector-icons";
-import * as React from "react";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../store/hooks";
+import { addNewItem } from "../../store/slices/cart/reducer";
+import {
+  addNewFavoriteItem,
+  removeFavoriteItem,
+} from "../../store/slices/favorite/reducer";
 import { ProductItem } from "../../types/Product";
 import { InterBoldText } from "../Theme/StyledText";
 
@@ -10,14 +18,58 @@ interface FavoriteCardProps {
 
 const FavoriteCard = (props: FavoriteCardProps) => {
   const { product } = props;
+  const { favorite, cart } = useAppSelector((item) => item);
+  const favorites = favorite.favorite;
+  const products = cart.cart;
+  const dispatch = useDispatch();
+
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [itemInCart, setItemInCart] = useState(false);
+
+  const toggleFavorite = () => {
+    //@ts-ignore
+    const isInFavorites = favorites.find((item) => item.id == product.id);
+
+    if (isInFavorites) {
+      dispatch(removeFavoriteItem(product.id));
+    } else {
+      dispatch(addNewFavoriteItem(product));
+    }
+  };
+
+  useEffect(() => {
+    //@ts-ignore
+    const isInFavorites = favorites.find((item) => item.id == product.id);
+    //@ts-ignore
+    const isInCart = products.find((item) => item.product.id == product.id);
+
+    if (isInCart) {
+      setItemInCart(true);
+    } else {
+      setItemInCart(false);
+    }
+
+    if (isInFavorites) {
+      setIsFavorited(true);
+    } else {
+      setIsFavorited(false);
+    }
+  }, [favorites, products]);
+
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: product.thumbnail,
+      <Pressable
+        onPress={() => {
+          router.push(`/product/${product.id}`);
         }}
-        style={styles.productImage}
-      />
+      >
+        <Image
+          source={{
+            uri: product.thumbnail,
+          }}
+          style={styles.productImage}
+        />
+      </Pressable>
 
       <View style={styles.productDetailContainer}>
         <View>
@@ -32,11 +84,24 @@ const FavoriteCard = (props: FavoriteCardProps) => {
           {product.price} TL
         </InterBoldText>
       </View>
-      <Pressable style={styles.addToCartButton}>
-        <FontAwesome name="plus" />
+      <Pressable
+        style={styles.addToCartButton}
+        onPress={() => {
+          if (itemInCart) {
+            router.push("/(tabs)/basket");
+          } else {
+            dispatch(addNewItem({ product, quantity: 1 }));
+          }
+        }}
+      >
+        <FontAwesome name={itemInCart ? "shopping-basket" : "plus"} />
       </Pressable>
-      <Pressable style={styles.favoriteButton}>
-        <FontAwesome name="heart" color={"red"} size={15} />
+      <Pressable style={styles.favoriteButton} onPress={toggleFavorite}>
+        <FontAwesome
+          name={isFavorited ? "heart" : "heart-o"}
+          color={isFavorited ? "red" : "black"}
+          size={15}
+        />
       </Pressable>
     </View>
   );

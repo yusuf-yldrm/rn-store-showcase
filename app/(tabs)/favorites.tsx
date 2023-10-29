@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { useEffect, useState } from "react";
 import { FlatList } from "react-native-gesture-handler";
+import EmptyScreen from "../../src/components/Checkout/EmptyScreen";
 import { FavoriteCard } from "../../src/components/FavoriteCard";
 import { View } from "../../src/components/Theme/Themed";
 import { useAppSelector } from "../../src/store/hooks";
@@ -24,9 +25,11 @@ export default function FavoritesScreen() {
           justifyContent: "space-between",
           paddingHorizontal: 15,
         }}
+        contentContainerStyle={{ flexGrow: 1 }}
         ItemSeparatorComponent={() => (
           <View style={{ width: 10, height: 20 }} />
         )}
+        ListEmptyComponent={() => <EmptyScreen title="Favorites" />}
         style={styles.favoriteList}
         keyExtractor={({ title }) => title}
         renderItem={({ item, index }) => {

@@ -12,21 +12,24 @@ import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
 import { useAppSelector } from "../../src/store/hooks";
 import { addNewItem } from "../../src/store/slices/cart/reducer";
-import { addNewFavoriteItem } from "../../src/store/slices/favorite/reducer";
+import {
+  addNewFavoriteItem,
+  removeFavoriteItem,
+} from "../../src/store/slices/favorite/reducer";
 import { ProductItem } from "../../src/types/Product";
 import calculateDiscountedPrice from "../../src/utils/CalculateDiscount";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
-  const favoriteItems = useAppSelector((items) => items.favorite.favorite);
+  const { cart, favorite } = useAppSelector((item) => item);
+  const favoriteItems = favorite.favorite;
+  const products = cart.cart;
 
   const [product, setProduct] = useState<ProductItem>();
   const [loading, setLoading] = useState(false);
   const [isFavorite, setIsFavorited] = useState(false);
   const dispatch = useDispatch();
-  const products = useAppSelector((item) => item.cart.cart);
   const navigation = useNavigation();
-  const [quantity, setQuantity] = useState();
 
   const [itemInCart, setItemInCart] = useState(false);
 
@@ -51,7 +54,11 @@ const ProductScreen = () => {
     }
 
     setIsFavorited(!isFavorite);
-    dispatch(addNewFavoriteItem(product));
+    if (isFavorite) {
+      dispatch(removeFavoriteItem(product.id));
+    } else {
+      dispatch(addNewFavoriteItem(product));
+    }
   };
 
   const checkFavorite = () => {
@@ -73,7 +80,6 @@ const ProductScreen = () => {
   const checkInCart = () => {
     //@ts-ignore
     const item = products.find((item) => item.product.id == id);
-    console.log({ item });
 
     if (item) {
       setItemInCart(true);
@@ -138,6 +144,10 @@ const ProductScreen = () => {
     });
     checkFavorite();
   }, [isFavorite, product]);
+
+  useEffect(() => {
+    checkInCart();
+  }, [products]);
 
   if (loading) {
     return (
