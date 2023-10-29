@@ -37,7 +37,6 @@ const ProductScreen = () => {
 
   const toggleFavorite = () => {
     if (product == undefined) {
-      console.log({ product });
       alert("An error happening");
       return;
     }
@@ -48,7 +47,7 @@ const ProductScreen = () => {
 
   const checkFavorite = () => {
     // favoriteItems.map((item) => console.log(item));
-    console.log({ favoriteItems });
+    // console.log({ favoriteItems });
   };
 
   const getProductDetails = async () => {

@@ -28,6 +28,7 @@ export default function FavoritesScreen() {
           <View style={{ width: 10, height: 20 }} />
         )}
         style={styles.favoriteList}
+        keyExtractor={({ title }) => title}
         renderItem={({ item, index }) => {
           return <FavoriteCard product={item} />;
         }}

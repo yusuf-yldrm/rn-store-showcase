@@ -14,7 +14,6 @@ export const FavoriteData = createSlice({
       state: IFavorite,
       action: PayloadAction<ProductItem>
     ) => {
-      console.log(action.payload);
       state.favorite = [...state.favorite, action.payload];
     },
     removeFavoriteItem: (state: IFavorite, action: PayloadAction<number>) => {
