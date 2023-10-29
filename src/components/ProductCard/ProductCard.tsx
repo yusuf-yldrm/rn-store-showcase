@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   productImage: {
     width: 60,
     height: "100%",
-    backgroundSize: "cover",
     borderRadius: 5,
   },
   textArea: {

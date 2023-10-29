@@ -1,15 +1,36 @@
 import { StyleSheet } from "react-native";
 
-import { Text, View } from "../../src/components/Theme/Themed";
+import { useEffect, useState } from "react";
+import { FlatList } from "react-native-gesture-handler";
+import { FavoriteCard } from "../../src/components/FavoriteCard";
+import { View } from "../../src/components/Theme/Themed";
+import { useAppSelector } from "../../src/store/hooks";
+import { ProductItem } from "../../src/types/Product";
 
 export default function FavoritesScreen() {
+  const favoriteItems = useAppSelector((items) => items.favorite.favorite);
+  const [favorites, setFavorites] = useState<ProductItem[]>([]);
+
+  useEffect(() => {
+    setFavorites(favoriteItems);
+  }, [favoriteItems]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Favorites</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+      <FlatList
+        data={favorites}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+          paddingHorizontal: 15,
+        }}
+        ItemSeparatorComponent={() => (
+          <View style={{ width: 10, height: 20 }} />
+        )}
+        style={styles.favoriteList}
+        renderItem={({ item, index }) => {
+          return <FavoriteCard product={item} />;
+        }}
       />
     </View>
   );
@@ -20,6 +41,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  favoriteList: {
+    paddingTop: 20,
+    width: "100%",
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 20,

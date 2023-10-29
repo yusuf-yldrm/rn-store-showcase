@@ -31,6 +31,7 @@ const ImageSlider = ({ images }: { images: string[] }) => {
         horizontal
         onScroll={onScrollChange}
         showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={0}
         style={{ width, height }}
       >
         {images.map((image, index) => (

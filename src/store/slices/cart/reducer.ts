@@ -3,9 +3,8 @@ import { ProductItem } from "../../../types/Product";
 import { ICart, ICartState } from "./../../../types/Cart";
 
 export const initialState = {
-  cart: [], //Initial state of the cart
+  cart: [],
 };
-//  imporIProduct
 
 export const CartData = createSlice({
   name: "cartData",
