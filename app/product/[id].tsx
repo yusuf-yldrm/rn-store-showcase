@@ -12,6 +12,7 @@ import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
 import { addNewItem } from "../../src/store/slices/cart/reducer";
 import { ProductItem } from "../../src/types/Product";
+import calculateDiscountedPrice from "../../src/utils/CalculateDiscount";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
@@ -86,17 +87,35 @@ const ProductScreen = () => {
 
   return (
     <View style={styles.pageContainer}>
-      <ImageSlider images={product?.images || []} />
+      <View style={styles.imageContainer}>
+        <ImageSlider images={product?.images || []} />
+        <View style={styles.discountBox}>
+          <InterBoldText style={styles.discountText}>
+            %{product?.discountPercentage.toFixed(0)}
+          </InterBoldText>
+        </View>
+      </View>
 
       <View style={styles.productContainer}>
         <View style={styles.productHeader}>
           <InterBoldText style={styles.title}>{product?.title}</InterBoldText>
-          <InterBoldText style={styles.price}>
-            {product?.price} TL
-          </InterBoldText>
+          <View style={styles.priceContainer}>
+            <InterBoldText style={styles.price}>
+              {product?.price} TL
+            </InterBoldText>
+            <InterBoldText style={styles.discountPrice}>
+              {calculateDiscountedPrice(
+                product?.price,
+                product?.discountPercentage
+              ).toFixed(0)}{" "}
+              TL
+            </InterBoldText>
+          </View>
         </View>
         <View>
-          <InterMediumText>{product?.description}</InterMediumText>
+          <InterMediumText style={styles.descriptionText}>
+            {product?.description}
+          </InterMediumText>
         </View>
       </View>
 
@@ -131,7 +150,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
+  priceContainer: { flexDirection: "row", gap: 5, alignItems: "flex-end" },
   price: {
+    fontSize: 13,
+    textDecorationLine: "line-through",
+    color: "gray",
+  },
+  discountPrice: {
     fontSize: 15,
+  },
+  imageContainer: {
+    position: "relative",
+  },
+  discountBox: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "red",
+    padding: 5,
+    borderRadius: 100,
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  discountText: {
+    color: "white",
+    fontSize: 14,
+  },
+  descriptionText: {
+    color: "#645E5E",
   },
 });

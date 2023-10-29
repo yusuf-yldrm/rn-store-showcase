@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     maxWidth: 120,
     maxHeight: 40,
-    textOverflow: "ellipsis",
   },
   priceArea: { display: "flex", alignItems: "flex-end" },
   price: {},
