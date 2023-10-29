@@ -43,14 +43,19 @@ const ProductCard = ({
         )}
 
         {type == "checkout" && (
-          <View style={styles.countArea}>
-            <Pressable style={styles.countButton}>
-              <FontAwesome name="plus" />
-            </Pressable>
-            <InterBoldText>1</InterBoldText>
-            <Pressable style={styles.countButton}>
-              <FontAwesome name="trademark" />
-            </Pressable>
+          <View style={styles.checkoutContainer}>
+            <View style={styles.countArea}>
+              <Pressable style={styles.countButton}>
+                <FontAwesome name="minus" />
+              </Pressable>
+              <InterBoldText>1</InterBoldText>
+
+              <Pressable style={styles.countButton}>
+                <FontAwesome name="plus" />
+              </Pressable>
+            </View>
+
+            <FontAwesome name="trash" size={18} color={"red"} />
           </View>
         )}
       </View>
@@ -104,12 +109,20 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    gap: 5,
   },
   countButton: {
-    backgroundColor: "red",
-    borderRadius: 100,
+    backgroundColor: "#A7A7A7",
+    borderRadius: 2,
+    width: 20,
     padding: 4,
     alignItems: "center",
     justifyContent: "center",
   },
+  checkoutContainer: {
+    flexDirection: "row",
+
+    gap: 4,
+  },
+  trashIcon: {},
 });

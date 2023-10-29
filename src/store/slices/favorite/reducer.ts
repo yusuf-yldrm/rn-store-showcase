@@ -3,7 +3,7 @@ import { IFavorite, IFavoriteState } from "../../../types/Favorite";
 import { ProductItem } from "../../../types/Product";
 
 export const initialState = {
-  favorite: [], //Initial state of the cart
+  favorite: [],
 };
 
 export const FavoriteData = createSlice({
