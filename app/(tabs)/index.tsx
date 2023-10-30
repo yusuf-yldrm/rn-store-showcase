@@ -7,16 +7,12 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import FilterButton from "../../src/components/Discover/FilterButton";
 import ProductEmptyScreen from "../../src/components/Discover/ProductEmptyScreen";
 import SortSelectField from "../../src/components/Discover/SortSelectField";
 import { ProductCard } from "../../src/components/ProductCard";
-import {
-  InterBoldText,
-  InterMediumText,
-} from "../../src/components/Theme/StyledText";
+import { InterBoldText } from "../../src/components/Theme/StyledText";
 import { View } from "../../src/components/Theme/Themed";
 import jsStore from "../../src/services/network";
 import { ProductItem } from "../../src/types/Product";
@@ -32,7 +28,7 @@ export default function DiscoverScreen() {
   const [category, setCategory] = useState("");
 
   const getProducts = async () => {
-    if (query.length == 0) {
+    if (query.length == 0 && category == "") {
       try {
         setLoading(true);
         const [data, err] = await jsStore.product.getAllProducts();
@@ -82,7 +78,7 @@ export default function DiscoverScreen() {
       setProducts([]);
 
       const [data, err] = await jsStore.product.getProductsByCategory({
-        category: query,
+        category: category,
       });
 
       if (err != null) {
@@ -139,10 +135,7 @@ export default function DiscoverScreen() {
             placeholder="Search a product"
             onChangeText={setQuery}
           />
-          <View style={styles.iconArea}>
-            <FontAwesome name="filter" />
-            <InterMediumText>Filter</InterMediumText>
-          </View>
+
           <FilterButton category={category} setCategory={setCategory} />
           <SortSelectField setSort={setSort} sort={sort} />
         </View>

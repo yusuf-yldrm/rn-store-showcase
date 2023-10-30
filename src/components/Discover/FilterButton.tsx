@@ -55,8 +55,8 @@ const FilterButton = (props: FilterButtonProps) => {
         }}
         style={styles.iconArea}
       >
-        <FontAwesome name="sort" />
-        <InterMediumText>Sort</InterMediumText>
+        <FontAwesome name="filter" />
+        <InterMediumText>Filter</InterMediumText>
       </Pressable>
       <Modal
         animationType="fade"
@@ -75,6 +75,7 @@ const FilterButton = (props: FilterButtonProps) => {
                   label={item}
                   onSelect={() => {
                     props.setCategory(item);
+                    setModalVisible(!modalVisible);
                   }}
                   selected={item == props.category}
                 />
