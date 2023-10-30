@@ -47,6 +47,6 @@ Follow these steps to run the project on your local machine:
 
 ## Contact
 
-If you have any questions or need further information, you can reach out to me at your-email@example.com.
+If you have any questions or need further information, you can reach out to me at dev.yusufyildirim@gmail.com.
 
 Thank you for considering the "Store" project!
