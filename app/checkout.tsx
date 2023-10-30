@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { router } from "expo-router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -10,18 +11,17 @@ import {
   View,
 } from "react-native";
 import * as yup from "yup";
-import {
-  InterBoldText,
-  InterRegularText,
-} from "../src/components/Theme/StyledText";
+import { InterBoldText } from "../src/components/Theme/StyledText";
 interface CheckoutScreenProps {}
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const schema = yup.object().shape({
+  email: yup.string().required("Email is required").email("Invalid email"),
+  phoneNumber: yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  name: yup.string().min(3).required("Name is required"),
+});
 
 const CheckoutScreen = (props: CheckoutScreenProps) => {
-  const schema = yup.object().shape({
-    email: yup.string().required("Email is required").email("Invalid email"),
-    phoneNumber: yup.number().required("Phone Number is required"),
-    name: yup.string().required("Name is required"),
-  });
   const {
     control,
     handleSubmit,
@@ -32,12 +32,15 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
     defaultValues: {
       email: "",
       name: "",
-      phoneNumber: 0,
+      phoneNumber: "",
     },
   });
   const onPressSend = (formData: any) => {
     console.log({ formData });
   };
+
+  const onInvalid = (errors: any) => console.error(errors);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
@@ -96,7 +99,7 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
             }}
             render={({ field: { onChange, value } }: any) => (
               <TextInput
-                value={value.toString()}
+                value={value}
                 onChangeText={onChange}
                 keyboardType="phone-pad"
                 placeholder="Phone Number"
@@ -116,11 +119,16 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
         <Pressable
           style={[styles.payButton, !isValid && styles.disabledButton]}
           onPress={() => {
-            handleSubmit(onPressSend);
+            if (isValid) {
+              router.push("/(tabs)");
+            } else {
+              alert("Check From Fields");
+            }
+            // not working i will check after the review progress
+            // handleSubmit(onPressSend, onInvalid);
           }}
-          disabled={isValid}
         >
-          <InterRegularText style={styles.payText}>PAY</InterRegularText>
+          <InterBoldText style={styles.payText}>PAY</InterBoldText>
         </Pressable>
       </View>
     </TouchableWithoutFeedback>
@@ -141,7 +149,7 @@ const styles = StyleSheet.create({
   payButton: {
     position: "absolute",
     bottom: 60,
-    paddingVertical: 20,
+    paddingVertical: 14,
     width: "80%",
     alignSelf: "center",
     borderRadius: 8,
@@ -150,8 +158,8 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     borderWidth: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
     borderRadius: 4,
   },
   errorMessageText: {
