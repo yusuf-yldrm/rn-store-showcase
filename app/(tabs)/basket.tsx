@@ -1,6 +1,6 @@
 import { FlatList, Pressable, StyleSheet } from "react-native";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import CheckoutCard from "../../src/components/Checkout/CheckoutCard/CheckoutCard";
 import CheckoutItem from "../../src/components/Checkout/CheckoutItem";
@@ -74,7 +74,7 @@ export default function CheckoutScreen() {
           <Pressable
             style={styles.checkoutButton}
             onPress={() => {
-              AsyncStorage.clear();
+              router.push("/checkout");
             }}
           >
             <InterBoldText style={styles.checkoutText}>Checkout</InterBoldText>
