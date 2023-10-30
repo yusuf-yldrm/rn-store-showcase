@@ -6,21 +6,26 @@ This is a React Native  project designed to showcase my skills and capabilities.
 
 ## Project Overview
 
-- **Technology Stack**: React Native, Expo, Redux, Async Storage
+- **Technology Stack**: React Native, Expo, Redux, Redux Persist, Async Storage, Lottie, Yup, React Hook Form
 - **State Management**: Redux is used to manage the application's state and Async Storage is employed for persisting data.
 - **Error Handling**: The application effectively handles empty screens and provides a user-friendly experience.
 - **Network Service**: A REST API service is created in the '/src/services/network' directory to interact with external data sources.
 - **Task Tracking**: This project also includes a GitHub repository for task tracking and project management.
 - **Code Quality**: The codebase is well-organized and follows best practices to ensure clarity and reusability.
+- **GitHub Project**: A GitHub project is set up for task tracking and project management.
+
 
 ## Features
 
-- User can create, update, and delete tasks.
-- Task list is persisted locally using Async Storage.
-- State management using Redux for efficient data flow.
-- Network service to interact with external data sources.
-- Error handling for empty screens.
-- Clean and reusable codebase for easy maintenance and scalability.
+
+- **Favorite Products**: Users can mark and manage favorite products.
+- **Shopping Cart**: Add and remove products from the shopping cart.
+- **Product Search**: Search for products with filtering options.
+- **State Management**: Redux is used for efficient data flow.
+- **Local Data Storage**: Data is persisted using Async Storage.
+- **Error Handling**: Empty screens are handled gracefully.
+- **Network Service**: Interact with external data sources.
+- **Clean and Reusable Code**: Codebase follows best practices for maintainability and scalability.
 
 ## Getting Started
 
