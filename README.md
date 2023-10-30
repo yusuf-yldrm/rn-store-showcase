@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a React Native Expo project designed to showcase my skills and capabilities. It is a task tracking application that demonstrates various features and best practices for mobile app development.
+This is a React Native  project designed to showcase my skills and capabilities. It is a task tracking application that demonstrates various features and best practices for mobile app development.
 
 ## Project Overview
 
@@ -29,5 +29,6 @@ Follow these steps to run the project on your local machine:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/your-task-tracker.git
-   cd your-task-tracker
+   git clone https://github.com/yusuf-yldrm/rn-store-showcase
+   cd rn-store-showcase
+   npm run start | npx expo start
