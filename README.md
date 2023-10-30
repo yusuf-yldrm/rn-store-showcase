@@ -4,6 +4,11 @@
 
 This is a React Native  project designed to showcase my skills and capabilities. It is a task tracking application that demonstrates various features and best practices for mobile app development.
 
+
+[![Notion](https://raw.githubusercontent.com/simple-icons/simple-icons/main/icons/notion.svg)](https://www.notion.so/)
+[![GitHub](https://raw.githubusercontent.com/simple-icons/simple-icons/main/icons/github.svg)](https://github.com/)
+
+
 ## Project Overview
 
 - **Technology Stack**: React Native, Expo, Redux, Redux Persist, Async Storage, Lottie, Yup, React Hook Form
@@ -37,3 +42,11 @@ Follow these steps to run the project on your local machine:
    git clone https://github.com/yusuf-yldrm/rn-store-showcase
    cd rn-store-showcase
    npm run start | npx expo start
+
+
+
+## Contact
+
+If you have any questions or need further information, you can reach out to me at your-email@example.com.
+
+Thank you for considering the "Store" project!
