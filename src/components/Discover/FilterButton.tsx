@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
 import {
+  ActivityIndicator,
   Alert,
   Modal,
   Pressable,
@@ -24,17 +25,19 @@ const FilterButton = (props: FilterButtonProps) => {
 
   const getCategories = async () => {
     try {
-      setLoading(true);
+      if (categories.length == 0) {
+        setLoading(true);
 
-      const [data, err] = await jsStore.product.getProductCategories({
-        category: "",
-      });
+        const [data, err] = await jsStore.product.getProductCategories({
+          category: "",
+        });
 
-      if (err != null) {
-        throw err;
+        if (err != null) {
+          throw err;
+        }
+        setCategories(data);
+        setLoading(false);
       }
-      setCategories(data);
-      setLoading(false);
     } catch (err: any) {
       console.error({
         title: "Discover > Get Products",
@@ -69,18 +72,25 @@ const FilterButton = (props: FilterButtonProps) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ScrollView style={{ height: 300, width: "100%", marginTop: 25 }}>
-              {categories.map((item) => (
-                <CustomRadioButton
-                  label={item}
-                  onSelect={() => {
-                    props.setCategory(item);
-                    setModalVisible(!modalVisible);
-                  }}
-                  selected={item == props.category}
-                />
-              ))}
-            </ScrollView>
+            {loading ? (
+              <View style={styles.loading}>
+                <ActivityIndicator />
+              </View>
+            ) : (
+              <ScrollView style={{ height: 300, width: "100%", marginTop: 25 }}>
+                {categories.map((item) => (
+                  <CustomRadioButton
+                    label={item}
+                    key={item}
+                    onSelect={() => {
+                      props.setCategory(item);
+                      setModalVisible(!modalVisible);
+                    }}
+                    selected={item == props.category}
+                  />
+                ))}
+              </ScrollView>
+            )}
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -117,6 +127,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+  },
+  loading: {
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalView: {
     width: "70%",

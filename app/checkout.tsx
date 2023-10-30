@@ -38,9 +38,6 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
       phoneNumber: "",
     },
   });
-  const onPressSend = (formData: any) => {
-    console.log({ formData });
-  };
 
   const onInvalid = (errors: any) => console.error(errors);
   const ConfettiRef = React.useRef(null);

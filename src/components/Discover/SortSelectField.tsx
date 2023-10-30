@@ -55,6 +55,7 @@ const SortSelectField = (props: SortSelectFieldProps) => {
               {sortOptions.map((item) => (
                 <CustomRadioButton
                   label={item.title}
+                  key={item.title}
                   onSelect={() => {
                     props.setSort(item.value);
                   }}
