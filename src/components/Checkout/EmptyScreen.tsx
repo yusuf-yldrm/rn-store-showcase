@@ -18,7 +18,6 @@ const EmptyScreen = ({ title = "Cart" }) => {
             alignSelf: "center",
             height: 200,
           }}
-          // Find more Lottie files at https://lottiefiles.com/featured
           source={require("../../../assets/animations/empty-cart-bg.json")}
         />
         <AnimatedLottieView
@@ -30,7 +29,6 @@ const EmptyScreen = ({ title = "Cart" }) => {
             height: 150,
             position: "absolute",
           }}
-          // Find more Lottie files at https://lottiefiles.com/featured
           source={require("../../../assets/animations/empty-cart.json")}
         />
       </View>

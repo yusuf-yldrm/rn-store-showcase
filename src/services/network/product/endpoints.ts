@@ -16,7 +16,6 @@ export const getProductById: Service.GetProductById = (data) =>
 
 // limit=10&skip=10&select=title,price
 export const searchProducts: Service.SearchProducts = (data) => {
-  console.log({ data });
   return request({
     url: "/products/search",
     params: {
