@@ -4,7 +4,7 @@ import { InterBoldText } from "../Theme/StyledText";
 
 interface CheckoutItemProps {
   title: string;
-  count: number;
+  count: number | string;
   type?: string;
 }
 

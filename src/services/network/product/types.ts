@@ -24,8 +24,28 @@ export type SearchProductsAnswer = {
   limit: number;
 };
 
+export type GetProductsByCategoryT = {
+  category: string;
+};
+export type GetProductsByCategoryAnswer = {
+  products: ProductItem[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
+export type GetCategoriesT = {};
+export type GetCategoriesAnswer = string[];
+
 export namespace Service {
   export type GetAllProducts = Request<GetAllProductsT, GetAllProductsAnswer>;
   export type GetProductById = Request<GetProductByIdT, GetProductByIdAnswer>;
+  export type GetProductsByCategory = Request<
+    GetProductsByCategoryT,
+    GetProductsByCategoryAnswer
+  >;
+
+  export type GetCategories = Request<GetCategoriesT, GetCategoriesAnswer>;
+
   export type SearchProducts = Request<SearchProductsT, SearchProductsAnswer>;
 }

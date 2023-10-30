@@ -12,6 +12,7 @@ import {
 import { CartProductItem } from "../../../types/Product";
 import calculateDiscountedPrice from "../../../utils/CalculateDiscount";
 import { InterBoldText } from "../../Theme/StyledText";
+const placeholderImage = require("../../../../assets/animations/placeholder.gif");
 
 const CheckoutCard = ({
   cartProduct,
@@ -62,7 +63,9 @@ const CheckoutCard = ({
   };
 
   const decreaseQuantity = () => {
-    dispatch(decreaseQuantityItem(productIdx));
+    if (quantity > 1) {
+      dispatch(decreaseQuantityItem(productIdx));
+    }
   };
 
   return (
@@ -74,6 +77,7 @@ const CheckoutCard = ({
           }}
         >
           <Image
+            defaultSource={placeholderImage}
             source={{ uri: product.thumbnail }}
             style={styles.productImage}
           />

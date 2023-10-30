@@ -1,30 +1,34 @@
 import {
   ActivityIndicator,
   FlatList,
+  Keyboard,
   StyleSheet,
   TextInput,
+  TouchableWithoutFeedback,
 } from "react-native";
 
-import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import FilterButton from "../../src/components/Discover/FilterButton";
 import ProductEmptyScreen from "../../src/components/Discover/ProductEmptyScreen";
+import SortSelectField from "../../src/components/Discover/SortSelectField";
 import { ProductCard } from "../../src/components/ProductCard";
-import {
-  InterBoldText,
-  InterMediumText,
-} from "../../src/components/Theme/StyledText";
+import { InterBoldText } from "../../src/components/Theme/StyledText";
 import { View } from "../../src/components/Theme/Themed";
 import jsStore from "../../src/services/network";
 import { ProductItem } from "../../src/types/Product";
+import { SortType } from "../../src/types/Sort";
+import { compareProducts } from "../../src/utils/compareProducts";
 
 export default function DiscoverScreen() {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalProduct, setTotalProduct] = useState(0);
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<SortType | null>(SortType.DISCOUNT);
+  const [category, setCategory] = useState("");
 
   const getProducts = async () => {
-    if (query.length == 0) {
+    if (query.length == 0 && category == "") {
       try {
         setLoading(true);
         const [data, err] = await jsStore.product.getAllProducts();
@@ -65,6 +69,39 @@ export default function DiscoverScreen() {
     }
   };
 
+  const searchProductsByCategory = async () => {
+    try {
+      if (category == "") {
+        return;
+      }
+      setLoading(true);
+      setProducts([]);
+
+      const [data, err] = await jsStore.product.getProductsByCategory({
+        category: category,
+      });
+
+      if (err != null) {
+        throw err;
+      }
+      setTotalProduct(data.total);
+      setProducts(data.products);
+      setLoading(false);
+    } catch (err: any) {
+      console.error({
+        title: "Discover > Get Products",
+        err,
+      });
+    }
+  };
+
+  const sortProducts = async () => {
+    if (sort != null) {
+      const filteredProducts = products;
+      products.sort((a, b) => compareProducts(a, b, sort));
+    }
+  };
+
   useEffect(() => {
     getProducts();
   }, [query]);
@@ -75,61 +112,66 @@ export default function DiscoverScreen() {
     }
   }, [query]);
 
+  useEffect(() => {
+    sortProducts();
+  }, [sort]);
+
+  useEffect(() => {
+    searchProductsByCategory();
+  }, [category]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.productInfoContainer}>
-        <InterBoldText>Ürünler</InterBoldText>
-        <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
-      </View>
-      <View style={styles.filterContainer}>
-        <TextInput
-          style={styles.searchInput}
-          value={query}
-          placeholder="Search a product"
-          onChangeText={setQuery}
-        />
-        <View style={styles.iconArea}>
-          <FontAwesome name="filter" />
-          <InterMediumText>Filter</InterMediumText>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <View style={styles.productInfoContainer}>
+          <InterBoldText>Ürünler</InterBoldText>
+          <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
         </View>
-        <View style={styles.iconArea}>
-          <FontAwesome name="sort" />
 
-          <InterMediumText>Sort</InterMediumText>
-        </View>
-      </View>
+        <View style={styles.filterContainer}>
+          <TextInput
+            style={styles.searchInput}
+            value={query}
+            placeholder="Search a product"
+            onChangeText={setQuery}
+          />
 
-      {loading ? (
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flex: 1,
-          }}
-        >
-          <ActivityIndicator size="large" />
+          <FilterButton category={category} setCategory={setCategory} />
+          <SortSelectField setSort={setSort} sort={sort} />
         </View>
-      ) : (
-        <FlatList
-          data={products}
-          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-          renderItem={({ item, index }) => (
-            <ProductCard key={item.id} product={item} />
-          )}
-          contentContainerStyle={{ flexGrow: 1 }}
-          ListEmptyComponent={() => (
-            <ProductEmptyScreen
-              onPress={() => {
-                setQuery("");
-              }}
-            />
-          )}
-          style={styles.productList}
-        />
-      )}
-    </View>
+
+        {loading ? (
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <FlatList
+            data={products}
+            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            renderItem={({ item, index }) => (
+              <ProductCard key={item.id} product={item} />
+            )}
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={() => (
+              <ProductEmptyScreen
+                onPress={() => {
+                  setQuery("");
+                }}
+              />
+            )}
+            style={styles.productList}
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

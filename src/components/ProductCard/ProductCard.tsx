@@ -2,7 +2,9 @@ import { router } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ProductItem } from "../../types/Product";
+import calculateDiscountedPrice from "../../utils/CalculateDiscount";
 import { InterBoldText, InterRegularText } from "../Theme/StyledText";
+const placeholderImage = require("../../../assets/animations/placeholder.gif");
 
 const ProductCard = ({ product }: { product: ProductItem }) => {
   return (
@@ -13,6 +15,7 @@ const ProductCard = ({ product }: { product: ProductItem }) => {
     >
       <View style={styles.productItem}>
         <Image
+          defaultSource={placeholderImage}
           source={{ uri: product.thumbnail }}
           style={styles.productImage}
         />
@@ -26,10 +29,13 @@ const ProductCard = ({ product }: { product: ProductItem }) => {
         </View>
         <View style={styles.priceArea}>
           <InterBoldText style={styles.price}>
-            {product.price && product.price + " TL"}
+            {calculateDiscountedPrice(
+              product.price,
+              product.discountPercentage
+            ).toFixed() + " TL"}
           </InterBoldText>
-          <InterRegularText style={styles.stock}>
-            {product.stock + "x"}{" "}
+          <InterRegularText style={styles.originalPrice}>
+            {product.price} TL
           </InterRegularText>
         </View>
       </View>
@@ -41,7 +47,7 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   productItem: {
-    backgroundColor: "#665b5b",
+    backgroundColor: "#D9D9D9",
     height: 60,
     display: "flex",
     flexDirection: "row",
@@ -75,8 +81,10 @@ const styles = StyleSheet.create({
   },
   priceArea: { display: "flex", alignItems: "flex-end" },
   price: {},
-  stock: {
+  originalPrice: {
     textAlign: "right",
+    textDecorationLine: "line-through",
+    color: "gray",
   },
   countArea: {
     display: "flex",
