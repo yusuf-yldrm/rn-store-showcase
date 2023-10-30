@@ -69,7 +69,7 @@ const FilterButton = (props: FilterButtonProps) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ScrollView style={{ height: 300 }}>
+            <ScrollView style={{ height: 300, width: "100%", marginTop: 25 }}>
               {categories.map((item) => (
                 <CustomRadioButton
                   label={item}
@@ -86,9 +86,8 @@ const FilterButton = (props: FilterButtonProps) => {
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <InterBoldText style={styles.textStyle}>
-                <FontAwesome name="close" />
-              </InterBoldText>
+              <InterBoldText style={styles.textStyle}>Categories</InterBoldText>
+              <FontAwesome name="close" />
             </Pressable>
           </View>
         </View>
@@ -143,17 +142,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 6,
     right: 6,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: "white",
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
   },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
+  buttonClose: {},
   textStyle: {
-    color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    fontSize: 18,
   },
   modalText: {
     marginBottom: 15,

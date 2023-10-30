@@ -1,5 +1,6 @@
+import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { InterBoldText } from "../Theme/StyledText";
+import { InterMediumText } from "../Theme/StyledText";
 
 export const CustomRadioButton = ({
   label,
@@ -10,18 +11,13 @@ export const CustomRadioButton = ({
   selected: boolean;
   onSelect: () => void;
 }) => (
-  <TouchableOpacity
-    style={[
-      styles.radioButton,
-      { backgroundColor: selected ? "#007BFF" : "#FFF" },
-    ]}
-    onPress={onSelect}
-  >
-    <InterBoldText
-      style={[styles.radioButtonText, { color: selected ? "#FFF" : "#000" }]}
+  <TouchableOpacity style={[styles.radioButton]} onPress={onSelect}>
+    <InterMediumText
+      style={[styles.radioButtonText, { fontWeight: selected ? "800" : "500" }]}
     >
       {label}
-    </InterBoldText>
+    </InterMediumText>
+    <FontAwesome name={selected ? "circle" : "circle-o"} />
   </TouchableOpacity>
 );
 
@@ -37,8 +33,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     marginVertical: 4,
-    borderWidth: 1,
-    borderColor: "#007BFF",
+    borderBottomWidth: 1,
+    width: "100%",
+    borderColor: "black",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
 import { Alert, Modal, Pressable, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { SortType } from "../../types/Sort";
 import { InterBoldText, InterMediumText } from "../Theme/StyledText";
 import { CustomRadioButton } from "./CustomRadioButton";
@@ -50,7 +51,7 @@ const SortSelectField = (props: SortSelectFieldProps) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View>
+            <ScrollView style={{ height: 150, width: "100%", marginTop: 25 }}>
               {sortOptions.map((item) => (
                 <CustomRadioButton
                   label={item.title}
@@ -60,7 +61,7 @@ const SortSelectField = (props: SortSelectFieldProps) => {
                   selected={item.value == props.sort}
                 />
               ))}
-            </View>
+            </ScrollView>
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -99,8 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    width: "70%",
-    margin: 20,
+    width: "85%",
     backgroundColor: "white",
     borderRadius: 20,
     paddingVertical: 10,
