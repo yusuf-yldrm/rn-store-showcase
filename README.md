@@ -1,4 +1,4 @@
-# React Native Store Project - Task Tracker
+# React Native Store Project 
 
 ## Introduction
 
