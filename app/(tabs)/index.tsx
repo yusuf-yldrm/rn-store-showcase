@@ -1,8 +1,10 @@
 import {
   ActivityIndicator,
   FlatList,
+  Keyboard,
   StyleSheet,
   TextInput,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
@@ -76,60 +78,62 @@ export default function DiscoverScreen() {
   }, [query]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.productInfoContainer}>
-        <InterBoldText>Ürünler</InterBoldText>
-        <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
-      </View>
-      <View style={styles.filterContainer}>
-        <TextInput
-          style={styles.searchInput}
-          value={query}
-          placeholder="Search a product"
-          onChangeText={setQuery}
-        />
-        <View style={styles.iconArea}>
-          <FontAwesome name="filter" />
-          <InterMediumText>Filter</InterMediumText>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <View style={styles.productInfoContainer}>
+          <InterBoldText>Ürünler</InterBoldText>
+          <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
         </View>
-        <View style={styles.iconArea}>
-          <FontAwesome name="sort" />
+        <View style={styles.filterContainer}>
+          <TextInput
+            style={styles.searchInput}
+            value={query}
+            placeholder="Search a product"
+            onChangeText={setQuery}
+          />
+          <View style={styles.iconArea}>
+            <FontAwesome name="filter" />
+            <InterMediumText>Filter</InterMediumText>
+          </View>
+          <View style={styles.iconArea}>
+            <FontAwesome name="sort" />
 
-          <InterMediumText>Sort</InterMediumText>
+            <InterMediumText>Sort</InterMediumText>
+          </View>
         </View>
-      </View>
 
-      {loading ? (
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flex: 1,
-          }}
-        >
-          <ActivityIndicator size="large" />
-        </View>
-      ) : (
-        <FlatList
-          data={products}
-          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-          renderItem={({ item, index }) => (
-            <ProductCard key={item.id} product={item} />
-          )}
-          contentContainerStyle={{ flexGrow: 1 }}
-          ListEmptyComponent={() => (
-            <ProductEmptyScreen
-              onPress={() => {
-                setQuery("");
-              }}
-            />
-          )}
-          style={styles.productList}
-        />
-      )}
-    </View>
+        {loading ? (
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <FlatList
+            data={products}
+            ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            renderItem={({ item, index }) => (
+              <ProductCard key={item.id} product={item} />
+            )}
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={() => (
+              <ProductEmptyScreen
+                onPress={() => {
+                  setQuery("");
+                }}
+              />
+            )}
+            style={styles.productList}
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

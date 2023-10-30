@@ -62,7 +62,9 @@ const CheckoutCard = ({
   };
 
   const decreaseQuantity = () => {
-    dispatch(decreaseQuantityItem(productIdx));
+    if (quantity > 1) {
+      dispatch(decreaseQuantityItem(productIdx));
+    }
   };
 
   return (

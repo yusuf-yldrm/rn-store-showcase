@@ -6,7 +6,7 @@ import type { Service } from "./types";
 
 export const getAllProducts: Service.GetAllProducts = () =>
   request({
-    url: "/products",
+    url: "/products?select=title,price,thumbnail,description,discountPercentage",
   });
 
 export const getProductById: Service.GetProductById = (data) =>
@@ -18,7 +18,11 @@ export const getProductById: Service.GetProductById = (data) =>
 export const searchProducts: Service.SearchProducts = (data) => {
   console.log({ data });
   return request({
-    url: "/products/search?q=" + data?.q,
+    url: "/products/search",
+    params: {
+      q: data?.q,
+      select: "select=title,price,thumbnail,description,discountPercentage",
+    },
   });
 };
 export const getProductCategories: any = () =>
