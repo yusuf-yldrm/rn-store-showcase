@@ -17,7 +17,7 @@ This is a React Native  project designed to showcase my skills and capabilities.
 - **Network Service**: A REST API service is created in the '/src/services/network' directory to interact with external data sources.
 - **Task Tracking**: This project also includes a GitHub repository for task tracking and project management.
 - **Code Quality**: The codebase is well-organized and follows best practices to ensure clarity and reusability.
-- **GitHub Project**: A GitHub project is set up for task tracking and project management.
+- **Repo Branches**: A GitHub project is set up for multi branch system for handle production mode.
 
 
 ## Features
