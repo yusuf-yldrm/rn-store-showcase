@@ -71,6 +71,10 @@ function RootLayoutNav() {
               options={{ presentation: "modal", title: "About" }}
             />
             <Stack.Screen
+              name="checkout"
+              options={{ presentation: "modal", title: "Checkout" }}
+            />
+            <Stack.Screen
               name="product/[id]"
               options={{
                 //@ts-ignore

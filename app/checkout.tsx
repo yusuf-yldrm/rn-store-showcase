@@ -10,8 +10,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import ConfettiCannon from "react-native-confetti-cannon";
 import * as yup from "yup";
 import { InterBoldText } from "../src/components/Theme/StyledText";
+
 interface CheckoutScreenProps {}
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -22,6 +24,7 @@ const schema = yup.object().shape({
 });
 
 const CheckoutScreen = (props: CheckoutScreenProps) => {
+  const [startConfetti, setStartConfetti] = React.useState(false);
   const {
     control,
     handleSubmit,
@@ -40,6 +43,12 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
   };
 
   const onInvalid = (errors: any) => console.error(errors);
+  const ConfettiRef = React.useRef(null);
+
+  const handleConfetti = () => {
+    //@ts-ignore
+    ConfettiRef && ConfettiRef.current?.start();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -120,7 +129,10 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
           style={[styles.payButton, !isValid && styles.disabledButton]}
           onPress={() => {
             if (isValid) {
-              router.push("/(tabs)");
+              handleConfetti();
+              setTimeout(() => {
+                router.push("/shipping");
+              }, 1500);
             } else {
               alert("Check From Fields");
             }
@@ -130,6 +142,12 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
         >
           <InterBoldText style={styles.payText}>PAY</InterBoldText>
         </Pressable>
+        <ConfettiCannon
+          count={200}
+          origin={{ x: -10, y: 0 }}
+          autoStart={startConfetti}
+          ref={ConfettiRef}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

@@ -6,7 +6,7 @@ import type { Service } from "./types";
 
 export const getAllProducts: Service.GetAllProducts = () =>
   request({
-    url: "/products?select=title,price,thumbnail,description,discountPercentage",
+    url: "/products?limit=0&select=title,price,thumbnail,description,discountPercentage",
   });
 
 export const getProductById: Service.GetProductById = (data) =>

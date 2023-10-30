@@ -10,6 +10,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import ProductEmptyScreen from "../../src/components/Discover/ProductEmptyScreen";
+import SortSelectField from "../../src/components/Discover/SortSelectField";
 import { ProductCard } from "../../src/components/ProductCard";
 import {
   InterBoldText,
@@ -24,6 +25,7 @@ export default function DiscoverScreen() {
   const [loading, setLoading] = useState(false);
   const [totalProduct, setTotalProduct] = useState(0);
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState(1);
 
   const getProducts = async () => {
     if (query.length == 0) {
@@ -67,6 +69,8 @@ export default function DiscoverScreen() {
     }
   };
 
+  const fetchMoreData = async () => {};
+
   useEffect(() => {
     getProducts();
   }, [query]);
@@ -84,6 +88,7 @@ export default function DiscoverScreen() {
           <InterBoldText>Ürünler</InterBoldText>
           <InterBoldText>(Toplam {totalProduct} adet)</InterBoldText>
         </View>
+
         <View style={styles.filterContainer}>
           <TextInput
             style={styles.searchInput}
@@ -95,11 +100,7 @@ export default function DiscoverScreen() {
             <FontAwesome name="filter" />
             <InterMediumText>Filter</InterMediumText>
           </View>
-          <View style={styles.iconArea}>
-            <FontAwesome name="sort" />
-
-            <InterMediumText>Sort</InterMediumText>
-          </View>
+          <SortSelectField />
         </View>
 
         {loading ? (
@@ -130,6 +131,7 @@ export default function DiscoverScreen() {
               />
             )}
             style={styles.productList}
+            onEndReached={fetchMoreData}
           />
         )}
       </View>
