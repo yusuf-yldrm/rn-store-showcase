@@ -198,7 +198,7 @@ const ProductScreen = () => {
             router.push("/(tabs)/basket");
           } else {
             addCartNewItem();
-            alert(product?.title + "added to the cart.");
+            alert(product?.title + " added to the cart.");
           }
         }}
         productId={product?.id.toString()}
