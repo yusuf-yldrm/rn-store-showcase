@@ -11,9 +11,10 @@ import {
 import ImageSlider from "../../src/components/Utils/ImageSlider";
 import jsStore from "../../src/services/network";
 import { useAppSelector } from "../../src/store/hooks";
-import { addNewItem } from "../../src/store/slices/cart/reducer";
+import { addNewItem, cartStateData } from "../../src/store/slices/cart/reducer";
 import {
   addNewFavoriteItem,
+  favoriteStateData,
   removeFavoriteItem,
 } from "../../src/store/slices/favorite/reducer";
 import { ProductItem } from "../../src/types/Product";
@@ -21,9 +22,8 @@ import calculateDiscountedPrice from "../../src/utils/CalculateDiscount";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
-  const { cart, favorite } = useAppSelector((item) => item);
-  const favoriteItems = favorite.favorite;
-  const products = cart.cart;
+  const favoriteItems = useAppSelector((state) => favoriteStateData(state));
+  const products = useAppSelector((state) => cartStateData(state));
 
   const [product, setProduct] = useState<ProductItem>();
   const [loading, setLoading] = useState(false);
