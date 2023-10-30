@@ -5,7 +5,7 @@
 This is a React Native  project designed to showcase my skills and capabilities. It is a task tracking application that demonstrates various features and best practices for mobile app development.
 
 
-[Notion](https://www.notion.so/React-Native-Showcase-6a80794df2464d1f9877edb6aaf33c8d#1bb3092cc1174d7d9b5ae2a6c1fb704f)
+[Notion](https://www.notion.so/React-Native-Showcase-6a80794df2464d1f9877edb6aaf33c8d?pvs=4)
 [GitHub](https://github.com/users/yusuf-yldrm/projects/3)
 
 
