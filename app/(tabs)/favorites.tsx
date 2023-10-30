@@ -6,10 +6,12 @@ import EmptyScreen from "../../src/components/Checkout/EmptyScreen";
 import { FavoriteCard } from "../../src/components/FavoriteCard";
 import { View } from "../../src/components/Theme/Themed";
 import { useAppSelector } from "../../src/store/hooks";
+import { favoriteStateData } from "../../src/store/slices/favorite/reducer";
 import { ProductItem } from "../../src/types/Product";
 
 export default function FavoritesScreen() {
-  const favoriteItems = useAppSelector((items) => items.favorite.favorite);
+  const favoriteItems = useAppSelector((items) => favoriteStateData(items));
+
   const [favorites, setFavorites] = useState<ProductItem[]>([]);
 
   useEffect(() => {

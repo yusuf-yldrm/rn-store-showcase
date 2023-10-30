@@ -1,32 +1,51 @@
 import { FontAwesome } from "@expo/vector-icons";
 import * as React from "react";
-import { Alert, Modal, Pressable, StyleSheet, View } from "react-native";
-import { SortType } from "../../types/Sort";
+import {
+  Alert,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import jsStore from "../../services/network";
 import { InterBoldText, InterMediumText } from "../Theme/StyledText";
 import { CustomRadioButton } from "./CustomRadioButton";
 
-interface SortSelectFieldProps {
-  setSort: (sort: SortType) => void;
-  sort: SortType | null;
+interface FilterButtonProps {
+  setCategory: (category: string) => void;
+  category: string | null;
 }
 
-const SortSelectField = (props: SortSelectFieldProps) => {
+const FilterButton = (props: FilterButtonProps) => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [categories, setCategories] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const sortOptions = [
-    {
-      title: "Price (DESC)",
-      value: SortType.PRICE_DESC,
-    },
-    {
-      title: "Price (ASC)",
-      value: SortType.PRICE_ASC,
-    },
-    {
-      title: "Discount (%)",
-      value: SortType.DISCOUNT,
-    },
-  ];
+  const getCategories = async () => {
+    try {
+      setLoading(true);
+
+      const [data, err] = await jsStore.product.getProductCategories({
+        category: "",
+      });
+
+      if (err != null) {
+        throw err;
+      }
+      setCategories(data);
+      setLoading(false);
+    } catch (err: any) {
+      console.error({
+        title: "Discover > Get Products",
+        err,
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    getCategories();
+  }, [modalVisible]);
 
   return (
     <>
@@ -50,17 +69,17 @@ const SortSelectField = (props: SortSelectFieldProps) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View>
-              {sortOptions.map((item) => (
+            <ScrollView style={{ height: 300 }}>
+              {categories.map((item) => (
                 <CustomRadioButton
-                  label={item.title}
+                  label={item}
                   onSelect={() => {
-                    props.setSort(item.value);
+                    props.setCategory(item);
                   }}
-                  selected={item.value == props.sort}
+                  selected={item == props.category}
                 />
               ))}
-            </View>
+            </ScrollView>
 
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -77,7 +96,7 @@ const SortSelectField = (props: SortSelectFieldProps) => {
   );
 };
 
-export default SortSelectField;
+export default FilterButton;
 
 const styles = StyleSheet.create({
   container: {},
@@ -89,6 +108,7 @@ const styles = StyleSheet.create({
     gap: 3,
     borderWidth: 1,
     borderRadius: 5,
+    paddingVertical: 5,
     paddingHorizontal: 4,
     height: "100%",
   },

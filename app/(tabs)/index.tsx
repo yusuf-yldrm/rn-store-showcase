@@ -9,6 +9,7 @@ import {
 
 import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import FilterButton from "../../src/components/Discover/FilterButton";
 import ProductEmptyScreen from "../../src/components/Discover/ProductEmptyScreen";
 import SortSelectField from "../../src/components/Discover/SortSelectField";
 import { ProductCard } from "../../src/components/ProductCard";
@@ -19,13 +20,16 @@ import {
 import { View } from "../../src/components/Theme/Themed";
 import jsStore from "../../src/services/network";
 import { ProductItem } from "../../src/types/Product";
+import { SortType } from "../../src/types/Sort";
+import { compareProducts } from "../../src/utils/compareProducts";
 
 export default function DiscoverScreen() {
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalProduct, setTotalProduct] = useState(0);
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState(1);
+  const [sort, setSort] = useState<SortType | null>(SortType.DISCOUNT);
+  const [category, setCategory] = useState("");
 
   const getProducts = async () => {
     if (query.length == 0) {
@@ -69,7 +73,38 @@ export default function DiscoverScreen() {
     }
   };
 
-  const fetchMoreData = async () => {};
+  const searchProductsByCategory = async () => {
+    try {
+      if (category == "") {
+        return;
+      }
+      setLoading(true);
+      setProducts([]);
+
+      const [data, err] = await jsStore.product.getProductsByCategory({
+        category: query,
+      });
+
+      if (err != null) {
+        throw err;
+      }
+      setTotalProduct(data.total);
+      setProducts(data.products);
+      setLoading(false);
+    } catch (err: any) {
+      console.error({
+        title: "Discover > Get Products",
+        err,
+      });
+    }
+  };
+
+  const sortProducts = async () => {
+    if (sort != null) {
+      const filteredProducts = products;
+      products.sort((a, b) => compareProducts(a, b, sort));
+    }
+  };
 
   useEffect(() => {
     getProducts();
@@ -80,6 +115,14 @@ export default function DiscoverScreen() {
       searchProductsByQuery();
     }
   }, [query]);
+
+  useEffect(() => {
+    sortProducts();
+  }, [sort]);
+
+  useEffect(() => {
+    searchProductsByCategory();
+  }, [category]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -100,7 +143,8 @@ export default function DiscoverScreen() {
             <FontAwesome name="filter" />
             <InterMediumText>Filter</InterMediumText>
           </View>
-          <SortSelectField />
+          <FilterButton category={category} setCategory={setCategory} />
+          <SortSelectField setSort={setSort} sort={sort} />
         </View>
 
         {loading ? (
@@ -131,7 +175,6 @@ export default function DiscoverScreen() {
               />
             )}
             style={styles.productList}
-            onEndReached={fetchMoreData}
           />
         )}
       </View>

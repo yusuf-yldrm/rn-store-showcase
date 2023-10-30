@@ -25,13 +25,13 @@ export const searchProducts: Service.SearchProducts = (data) => {
     },
   });
 };
-export const getProductCategories: any = () =>
+export const getProductCategories: Service.GetCategories = () =>
   request({
     url: "/products/categories",
   });
 
 // Get products of a categorye
-export const getProductsByCategory: any = (data: { category: string }) =>
+export const getProductsByCategory: Service.GetProductsByCategory = (data) =>
   request({
-    url: "/products/category/" + data.category,
+    url: "/products/category/" + data?.category,
   });
