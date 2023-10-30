@@ -7,6 +7,8 @@ This is a React Native  project designed to showcase my skills and capabilities.
 
 [Notion](https://www.notion.so/React-Native-Showcase-6a80794df2464d1f9877edb6aaf33c8d?pvs=4)
 [GitHub](https://github.com/users/yusuf-yldrm/projects/3)
+[App Screen Recording](https://streamable.com/8e6sfz)
+
 
 
 ## Project Overview
