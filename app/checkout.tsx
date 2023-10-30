@@ -11,8 +11,10 @@ import {
   View,
 } from "react-native";
 import ConfettiCannon from "react-native-confetti-cannon";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { InterBoldText } from "../src/components/Theme/StyledText";
+import { clearCart } from "../src/store/slices/cart/reducer";
 
 interface CheckoutScreenProps {}
 const phoneRegExp =
@@ -39,6 +41,7 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
     },
   });
 
+  const dispatch = useDispatch();
   const onInvalid = (errors: any) => console.error(errors);
   const ConfettiRef = React.useRef(null);
 
@@ -126,6 +129,7 @@ const CheckoutScreen = (props: CheckoutScreenProps) => {
           style={[styles.payButton, !isValid && styles.disabledButton]}
           onPress={() => {
             if (isValid) {
+              dispatch(clearCart());
               handleConfetti();
               setTimeout(() => {
                 router.push("/shipping");
