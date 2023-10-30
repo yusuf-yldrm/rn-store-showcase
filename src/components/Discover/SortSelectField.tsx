@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { InterMediumText } from "../Theme/StyledText";
 
 interface SortSelectFieldProps {}
@@ -18,22 +18,10 @@ const SortSelectField = (props: SortSelectFieldProps) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.iconArea}>
-        <FontAwesome name="sort" />
+    <View style={styles.iconArea}>
+      <FontAwesome name="sort" />
 
-        <InterMediumText>Sort</InterMediumText>
-      </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <View style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
-        </View>
-      </BottomSheet>
+      <InterMediumText>Sort</InterMediumText>
     </View>
   );
 };
@@ -42,10 +30,7 @@ export default SortSelectField;
 
 const styles = StyleSheet.create({
   container: {},
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
+
   iconArea: {
     borderColor: "gray",
     flexDirection: "row",

@@ -4,6 +4,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import { ProductItem } from "../../types/Product";
 import calculateDiscountedPrice from "../../utils/CalculateDiscount";
 import { InterBoldText, InterRegularText } from "../Theme/StyledText";
+const placeholderImage = require("../../../assets/animations/placeholder.gif");
 
 const ProductCard = ({ product }: { product: ProductItem }) => {
   return (
@@ -14,6 +15,7 @@ const ProductCard = ({ product }: { product: ProductItem }) => {
     >
       <View style={styles.productItem}>
         <Image
+          defaultSource={placeholderImage}
           source={{ uri: product.thumbnail }}
           style={styles.productImage}
         />
