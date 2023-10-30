@@ -5,8 +5,8 @@
 This is a React Native  project designed to showcase my skills and capabilities. It is a task tracking application that demonstrates various features and best practices for mobile app development.
 
 
-[![Notion](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/200px-Notion-logo.svg.png)](https://www.notion.so/)
-[![GitHub]([https://raw.githubusercontent.com/simple-icons/simple-icons/main/icons/github.svg](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/400px-GitHub_Invertocat_Logo.svg.png))](https://github.com/)
+[![Notion](https://www.svgrepo.com/show/361558/notion-logo.svg)](https://www.notion.so/)
+[![GitHub](https://www.svgrepo.com/show/361558/notion-logo.svg)](https://github.com/)
 
 
 ## Project Overview
